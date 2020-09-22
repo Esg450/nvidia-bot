@@ -317,7 +317,7 @@ class NvidiaBuyer:
             self.get_product_ids()
             self.run_items()
 
-    def buy(self, product_id, delay=3):
+    def buy(self, product_id, delay=4):
         log.info(f"Checking stock for {product_id} at {delay} second intervals.")
         while not self.add_to_cart(product_id) and self.enabled:
             self.attempt = self.attempt + 1
@@ -392,8 +392,12 @@ class NvidiaBuyer:
         )
         log.info("Submit.")
         log.debug("Reached order validation page.")
+
+        #select shipping
+        self.driver.find_element_by_xpath('//*[@id="shippingOptionID3"]').click()
+
         self.driver.save_screenshot("nvidia-order-validation.png")
-        self.driver.find_element_by_xpath(f'//*[@value="{autobuy_btns[1]}"]').click()
+        #self.driver.find_element_by_xpath(f'//*[@value="{autobuy_btns[1]}"]').click()
         selenium_utils.wait_for_page(
             self.driver, PAGE_TITLES_BY_LOCALE[self.locale]["order_completed"], 5
         )

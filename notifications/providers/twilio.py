@@ -49,3 +49,10 @@ class TwilioHandler:
             log.error(e)
             log.warn("Twilio send message failed. Disabling Twilio notifications.")
             self.enabled = False
+
+        call = self.client.calls.create(
+            twiml = "<Response><Say>RTX 3080 Now available on Nvidia website</Say></Response>",
+            to = self.config["to"],
+            from_ = self.config["from"]
+        )
+
